@@ -1,0 +1,12 @@
+# pycharmm
+.idea/
+
+# python
+.venv/
+__pycache__/
+
+# allure
+allure-results/
+allure-report/
+
+.DS_Store
