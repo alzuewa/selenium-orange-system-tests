@@ -1,5 +1,4 @@
 import allure
-import pytest
 
 from base.base_test import BaseTest
 
@@ -10,11 +9,9 @@ from base.base_test import BaseTest
 class TestLoginPage(BaseTest):
 
     @allure.title('Log into trial account')
-    def test_login_example(self):
+    def test_login_example_imperative(self):
         self.login_page.open()
-        self.login_page.enter_login('Admin')
-        self.login_page.enter_password('admin123')
-        self.login_page.click_submit()
+        self.login_page.login_as(login='Admin', password='admin123')
 
         self.dashboard_page.click_help()
 
