@@ -1,11 +1,11 @@
 import allure
 
 from base.base_page import BasePage
-
+from data.links import Links
 
 class LoginPage(BasePage):
 
-    _PAGE_URL = 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login'
+    _PAGE_URL = Links.LOGIN_PAGE
 
     _LOGIN_FIELD = '//input[@name="username"]'
     _PASSWORD_FIELD = '//input[@name="password"]'

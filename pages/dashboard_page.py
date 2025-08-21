@@ -1,8 +1,9 @@
 from base.base_page import BasePage
+from data.links import Links
 
 
 class DashboardPage(BasePage):
-    _PAGE_URL = 'https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index'
+    _PAGE_URL = Links.DASHBOARD_PAGE
 
     _HELP_BUTTON = '//button[@title="Help"]'
 
