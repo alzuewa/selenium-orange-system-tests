@@ -1,4 +1,5 @@
 allure-pytest==2.15.0
+Faker==37.5.3
 pytest==8.4.1
 python-dotenv==1.1.1
 selenium==4.35.0
