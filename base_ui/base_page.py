@@ -66,6 +66,13 @@ class BasePage:
             attachment_type=allure.attachment_type.PNG
         )
 
+    def wait_element_in_dom(self, locator: Element):
+        try:
+            self.wait.until(EC.presence_of_element_located((locator.by, locator.value)))
+            return True
+        except TimeoutException:
+            return False
+
     def wait_for_visibility(self, locator: Element):
         try:
             self.wait.until(EC.visibility_of_element_located((locator.by, locator.value)))

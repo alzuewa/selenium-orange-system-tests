@@ -1,4 +1,6 @@
+import time
 from dataclasses import dataclass
+from typing import Sequence
 
 import allure
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -11,7 +13,7 @@ from base_ui.exceptions import ElementAbsentException
 
 @dataclass
 class NewVacancyData:
-    vacancy_name: str
+    vacancy_name: Sequence[str]
     job_title: JobTitles
     hiring_manager: str
     description: str | None = None
@@ -60,18 +62,22 @@ class VacanciesPage(BasePage):
             text=data.vacancy_name
         )
         self.select_element_by_text(self.locators.Vacancies.NewVacancyForm.JOB_TITLE, text=data.job_title)
-        self.fill_out(self.locators.Vacancies.NewVacancyForm.MANAGER_FIELD, text=data.hiring_manager)
 
-        autocomplete_visible = self.wait_for_visibility(self.locators.Vacancies.NewVacancyForm.MANAGERS_DROPDOWN_FIRST)
-        if autocomplete_visible:
-            self.click(self.locators.Vacancies.NewVacancyForm.MANAGERS_DROPDOWN_FIRST)
-        else:
-            raise ElementAbsentException(
-                f'Locator "{self.locators.Vacancies.NewVacancyForm.MANAGERS_DROPDOWN_FIRST.elem_description}" '
-                f'with text "{data.hiring_manager}" is not found'
-            )
         if not data.description is None:
             self.fill_out(self.locators.Vacancies.NewVacancyForm.DESCRIPTION_FIELD, text=data.description)
+
+        self.fill_out(self.locators.Vacancies.NewVacancyForm.MANAGER_FIELD, text=data.hiring_manager)
+        time.sleep(5)  # Otherwise even wait does not work
+        autocomplete_visible = self.wait_for_visibility(
+            self.locators.Vacancies.NewVacancyForm.MANAGERS_DROPDOWN_FIRST
+        )
+        if autocomplete_visible:
+            self.scroll_to_element(self.locators.Vacancies.NewVacancyForm.MANAGERS_DROPDOWN_FIRST)
+            self.click(self.locators.Vacancies.NewVacancyForm.MANAGERS_DROPDOWN_FIRST)
+        else:
+            raise ElementAbsentException('Autocomplete is not visible')
+        assert self.wait_for_invisibility(self.locators.Vacancies.NewVacancyForm.INVALID_NAME_INDICATOR)
+
         if not data.number_of_positions is None:
             self.fill_out(
                 self.locators.Vacancies.NewVacancyForm.POSITIONS_COUNT_FIELD,
@@ -82,4 +88,5 @@ class VacanciesPage(BasePage):
         if not rss:
             self.click(self.locators.Vacancies.NewVacancyForm.RSS_CHECKBOX)
         self.click(self.locators.Vacancies.NewVacancyForm.SAVE_BUTTON)
-        self.wait()
+        self.wait_element_in_dom(self.locators.SPINNER_LOADER)
+        self.wait_for_invisibility(self.locators.SPINNER_LOADER)
