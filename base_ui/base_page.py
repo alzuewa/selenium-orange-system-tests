@@ -5,7 +5,7 @@ from pathlib import Path
 import allure
 from selenium.common import NoSuchElementException, StaleElementReferenceException
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver import ActionChains
+from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
@@ -48,7 +48,7 @@ class BasePage:
         else:
             return self.driver.find_elements(locator.by, locator.value)
 
-    def fill_out(self, locator: Element, text: str | Sequence):
+    def fill_out(self, locator: Element, text: str | Sequence | Keys):
         element = self.find_element(locator)
         element.send_keys(text)
 

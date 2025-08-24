@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Sequence
 
 import allure
+from selenium.webdriver import Keys
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from app_orange_hrm.locators.recruitment_page import RecruitmentPageLocators, Tabs
@@ -72,8 +73,8 @@ class VacanciesPage(BasePage):
             self.locators.Vacancies.NewVacancyForm.MANAGERS_DROPDOWN_FIRST
         )
         if autocomplete_visible:
-            self.scroll_to_element(self.locators.Vacancies.NewVacancyForm.MANAGERS_DROPDOWN_FIRST)
-            self.click(self.locators.Vacancies.NewVacancyForm.MANAGERS_DROPDOWN_FIRST)
+            self.fill_out(self.locators.Vacancies.NewVacancyForm.MANAGER_FIELD, Keys.ARROW_DOWN)
+            self.fill_out(self.locators.Vacancies.NewVacancyForm.MANAGER_FIELD, Keys.ENTER)
         else:
             raise ElementAbsentException('Autocomplete is not visible')
         assert self.wait_for_invisibility(self.locators.Vacancies.NewVacancyForm.INVALID_NAME_INDICATOR)
