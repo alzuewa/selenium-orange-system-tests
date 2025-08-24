@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+from base_ui.app_common_locators import AppCommonLocators
 from base_ui.element import By, Element
 
 
@@ -8,7 +9,7 @@ class Tabs(StrEnum):
     VACANCIES = 'Vacancies'
 
 
-class RecruitmentPageLocators:
+class RecruitmentPageLocators(AppCommonLocators):
     TABS = {
         Tabs.CANDIDATES: Element(By.XPATH, '//*[@class="oxd-topbar-body-nav-tab-item" and text()="Candidates"]',
                                  'Candidates widget'),
@@ -45,6 +46,9 @@ class RecruitmentPageLocators:
             ACTIVE_CHECKBOX = Element(By.XPATH, '//p[text()="Active"]/..//label', 'Active checkbox')
             RSS_CHECKBOX = Element(By.XPATH, '//p[text()="Publish in RSS Feed and Web Page"]/..//label', 'RSS checkbox')
             SAVE_BUTTON = Element(By.XPATH, '//button[@type="submit"]', 'Save button')
+
+            INVALID_NAME_INDICATOR = Element(By.XPATH, '//span[text()="Invalid"]', 'Invalid Name indicator')
+
 
         class Search:
             JOB_TITLE_SELECTOR = Element(

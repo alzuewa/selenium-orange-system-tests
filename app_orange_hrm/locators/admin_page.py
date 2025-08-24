@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+from base_ui.app_common_locators import AppCommonLocators
 from base_ui.element import By, Element
 
 
@@ -12,7 +13,7 @@ class Tabs(StrEnum):
     CONFIGURATION_TAB = 'Configuration'
 
 
-class AdminPageLocators:
+class AdminPageLocators(AppCommonLocators):
     ADD_USER_BUTTON = Element(By.XPATH, '//button//*[contains(@class, "bi-plus")]', 'Add new user button')
 
     TABS = {
