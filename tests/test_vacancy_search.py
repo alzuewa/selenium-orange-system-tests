@@ -6,7 +6,7 @@ import pytest
 
 from app_orange_hrm.pages.pages_strings.recruitment_vacancies import JobTitles
 from app_orange_hrm.pages.recruitment_page import NewVacancyData
-
+from tools.fakers import fake_en as fake
 
 @allure.epic('Vacancies')
 @allure.feature('Search vacancy')
@@ -16,10 +16,9 @@ class TestRecruitmentPage:
     @allure.title('Search vacancy by job title')
     @pytest.mark.parametrize(
         'job_title, vacancy_name', [
-            # TODO Replace with Faker
-            (JobTitles.SOFTWARE_ENGINEER, ''.join(choices(string.ascii_letters, k=50))),
-            (JobTitles.HR_MANAGER, ''.join(choices(string.digits, k=1))),
-            (JobTitles.CUSTOMER_SUCCESS_MANAGER, ''.join(choices(string.ascii_letters, k=15)))
+            (JobTitles.SOFTWARE_ENGINEER, fake.text(50)),
+            (JobTitles.HR_MANAGER, fake.text(1)),
+            (JobTitles.CUSTOMER_SUCCESS_MANAGER, fake.text(15))
         ]
     )
     def test_vacancy_search(self, app, job_title, vacancy_name):
