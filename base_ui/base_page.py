@@ -1,4 +1,5 @@
 import pickle
+from collections.abc import Sequence
 from pathlib import Path
 
 import allure
@@ -22,16 +23,14 @@ class BasePage:
         self.driver = driver
         self.wait = WebDriverWait(
             self.driver,
-            timeout=15,
+            timeout=20,
             poll_frequency=1,
             ignored_exceptions=[NoSuchElementException, StaleElementReferenceException]
         )
         self.actions = ActionChains(self.driver)
         self.main_menu = MainMenuLocators()
 
-        self.fake = Faker()
         self.url = 'https://opensource-demo.orangehrmlive.com'
-
         self.credentials = Credentials()
 
     def open(self):
@@ -41,20 +40,20 @@ class BasePage:
     def is_opened(self):
         self.wait.until(EC.url_to_be(self.url))
 
-    def find_element(self, locator: Element | WebElement):
+    def find_element(self, locator: Element):
         return self.wait.until(EC.visibility_of_element_located((locator.by, locator.value)))
 
-    def find_all_elements(self, locator: Element | WebElement, wait=False):
+    def find_all_elements(self, locator: Element, wait=False):
         if wait:
             return self.wait.until(EC.visibility_of_all_elements_located((locator.by, locator.value)))
         else:
             return self.driver.find_elements(locator.by, locator.value)
 
-    def fill_out(self, locator: Element | WebElement, text: str):
+    def fill_out(self, locator: Element, text: str | Sequence):
         element = self.find_element(locator)
         element.send_keys(text)
 
-    def click(self, locator: Element | WebElement, element_name: str = None):
+    def click(self, locator: Element, element_name: str = None):
         return self.wait.until(
             EC.element_to_be_clickable((locator.by, locator.value)),
             message=f'{element_name} is not clickable'
@@ -67,14 +66,14 @@ class BasePage:
             attachment_type=allure.attachment_type.PNG
         )
 
-    def wait_for_visibility(self, locator: Element | WebElement) -> bool:
+    def wait_for_visibility(self, locator: Element):
         try:
             self.wait.until(EC.visibility_of_element_located((locator.by, locator.value)))
             return True
         except TimeoutException:
             return False
 
-    def wait_for_invisibility(self, locator: Element | WebElement, message: str = None):
+    def wait_for_invisibility(self, locator: Element, message: str = None):
         return self.wait.until(EC.invisibility_of_element((locator.by, locator.value)), message=message)
 
     def save_cookies(self, cookies_name='temp-cookies'):
