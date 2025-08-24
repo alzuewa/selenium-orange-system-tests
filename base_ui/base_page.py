@@ -3,7 +3,6 @@ from collections.abc import Sequence
 from pathlib import Path
 
 import allure
-from faker import Faker
 from selenium.common import NoSuchElementException, StaleElementReferenceException
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import ActionChains
